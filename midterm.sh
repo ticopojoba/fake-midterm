@@ -7,6 +7,11 @@ ACTION=${1}
 # version of file
 version=2.0
 
+function backup(){
+ls *.txt
+for f in *.txt; do cp $f "$f.bak"; done
+}
+
 function aws_cli(){
 touch awscli.txt
 aws ec2 describe-instances --filters Name=instance.group-name,Values=midterm  >> awscli.txt
@@ -31,6 +36,9 @@ sudo yum update -y
 }
 
 case "$ACTION" in
+        -b|--backup)
+                backup
+                ;;
 	-a|--aws)
 		aws_cli
 		;;
@@ -44,7 +52,7 @@ case "$ACTION" in
 	    	update_system_packages
 		;;
 	*)
-	echo "${0} -v"
+	echo "${0} -b|-a|-v|"
 	exit 1
 esac
 
